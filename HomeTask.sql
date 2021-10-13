@@ -86,10 +86,10 @@ SELECT TOP 1 CategoryName from Categories
 INNER JOIN Products ON Products.CategoryID = Categories.CategoryID
 INNER JOIN (SELECT ProductID 
 from Orders
-INNER JOIN [Order Details] on [Order Details].OrderID = Orders.OrderID
+INNER JOIN [Order Detail's] on [Order Details].OrderID = Orders.OrderID
 WHERE DATEDIFF(year, RequiredDate, DATEFROMPARTS(1997,1,1)) = 0
 ) as FilteredProducts ON FilteredProducts.ProductID = Products.ProductID
-INNER JOIN Suppliers ON Suppliers.SupplierID = Products.SupplierID
+INNER JOIN Customers ON Customers.CustomerID = Products.SupplierID
 GROUP BY CategoryName
 ORDER BY COUNT(CategoryName) DESC
 
