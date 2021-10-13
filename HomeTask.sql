@@ -1,15 +1,5 @@
-DECLARE @id int;
-
-SELECT @id = CategoryID
-FROM( 
-SELECT
-	CategoryID, MAX(UnitPrice) as Price FROM Products GROUP BY CategoryID
-) as Base;
-
-
-
-SELECT CategoryName from Categories WHERE CategoryID = @id;
-
+SELECT DISTINCT ProductName from Products
+WHERE UnitPrice = (SELECT MAX(UnitPrice) from Products) AND CategoryID = 1;
 
 
 
@@ -86,10 +76,11 @@ SELECT TOP 1 CategoryName from Categories
 INNER JOIN Products ON Products.CategoryID = Categories.CategoryID
 INNER JOIN (SELECT ProductID 
 from Orders
-INNER JOIN [Order Detail's] on [Order Details].OrderID = Orders.OrderID
+INNER JOIN [Order Details] on [Order Details].OrderID = Orders.OrderID
+INNER JOIN Customers ON Customers.CustomerID = Orders.CustomerID
 WHERE DATEDIFF(year, RequiredDate, DATEFROMPARTS(1997,1,1)) = 0
+AND NOT Customers.Fax IS NULL 
 ) as FilteredProducts ON FilteredProducts.ProductID = Products.ProductID
-INNER JOIN Customers ON Customers.CustomerID = Products.SupplierID
 GROUP BY CategoryName
 ORDER BY COUNT(CategoryName) DESC
 
